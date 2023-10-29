@@ -49,7 +49,7 @@ public class SecurityConfig {
                                         .authenticationEntryPoint(jwtAuthenticationEntryPoint))
                                 .oauth2Login(oauth-> oauth
                                         .userInfoEndpoint(userInfo->userInfo.userService(customOAuth2UserService))
-                                        .defaultSuccessUrl("/api/social"))
+                                        .defaultSuccessUrl("/api/auth/social"))
                 .build();
     }
 }
