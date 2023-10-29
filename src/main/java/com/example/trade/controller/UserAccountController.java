@@ -9,19 +9,21 @@ import com.example.trade.service.UserAccountService;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+@Slf4j
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/auth")
 public class UserAccountController {
 
     private final UserAccountService userAccountService;
     private final HttpSession httpSession;
 
-    @PostMapping("/auth")
-    public ResponseEntity login(@RequestBody LoginRequest request
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody LoginRequest request
     , HttpServletResponse response){
 
         UserInfoWithToken userInfo = userAccountService.login(request, response);
@@ -31,7 +33,8 @@ public class UserAccountController {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity signup(@RequestBody SignUpRequest request){
+    public ResponseEntity<?> signup(@RequestBody SignUpRequest request){
+        log.info("회원가입 시작");
 
         UserAccount user = userAccountService.singUp(request);
 
@@ -50,8 +53,8 @@ public class UserAccountController {
 
     @GetMapping("/test")
     public String test(){
-
-        return "tet";
+        return "하이";
     }
+
 
 }
