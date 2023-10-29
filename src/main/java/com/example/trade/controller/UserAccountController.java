@@ -4,6 +4,7 @@ package com.example.trade.controller;
 import com.example.trade.domain.UserAccount;
 import com.example.trade.dto.request.LoginRequest;
 import com.example.trade.dto.request.SignUpRequest;
+import com.example.trade.dto.response.Api;
 import com.example.trade.dto.response.UserInfoWithToken;
 import com.example.trade.service.UserAccountService;
 import jakarta.servlet.http.HttpServletResponse;
@@ -27,28 +28,40 @@ public class UserAccountController {
     , HttpServletResponse response){
 
         UserInfoWithToken userInfo = userAccountService.login(request, response);
+        log.info("{}님이 로그인하였습니다.",userInfo.getName());
 
         return ResponseEntity.ok()
-                .body(userInfo);
+                .body(Api.builder()
+                        .status("OK")
+                        .message("로그인에 성공했습니다.")
+                        .data(userInfo));
     }
 
     @PostMapping("/signup")
     public ResponseEntity<?> signup(@RequestBody SignUpRequest request){
-        log.info("회원가입 시작");
 
         UserAccount user = userAccountService.singUp(request);
+        log.info("{}님이 회원가입하였습니다.",user.getName());
 
-        return ResponseEntity.ok()
-                .body(user);
-
+        return ResponseEntity.status(201)
+                .body(Api.builder()
+                        .status("Created")
+                        .message("회원가입이 성공했습니다.")
+                        .data(null));
     }
 
     @GetMapping("/social")
-    public UserInfoWithToken socialLogin(HttpServletResponse response){
+    public ResponseEntity<?> socialLogin(HttpServletResponse response){
         UserAccount user = (UserAccount)httpSession.getAttribute("user");
 
         UserInfoWithToken userInfo = userAccountService.login(user, response);
-        return userInfo;
+        log.info("{}님이 소셜로그인 하였습니다.",userInfo.getName());
+
+        return ResponseEntity.ok()
+                .body(Api.builder()
+                        .status("OK")
+                        .message("소셜로그인에 성공했습니다.")
+                        .data(userInfo));
     }
 
     @GetMapping("/test")

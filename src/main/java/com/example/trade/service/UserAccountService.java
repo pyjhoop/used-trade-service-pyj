@@ -28,7 +28,6 @@ public class UserAccountService {
     private final RedisTemplate<String, String> redisTemplate;
     private final CookieUtil cookieUtil;
 
-
     public UserAccount singUp(SignUpRequest request){
         request.setPassword(passwordEncoder.encode(request.getPassword()));
         request.setProfile("/기본프로필 사진 경로");
