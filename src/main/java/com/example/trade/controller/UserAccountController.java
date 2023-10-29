@@ -6,7 +6,9 @@ import com.example.trade.dto.request.LoginRequest;
 import com.example.trade.dto.request.SignUpRequest;
 import com.example.trade.dto.response.Api;
 import com.example.trade.dto.response.UserInfoWithToken;
+import com.example.trade.dto.response.UserInfoWithTokens;
 import com.example.trade.service.UserAccountService;
+import com.example.trade.util.CookieUtil;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -22,12 +24,19 @@ public class UserAccountController {
 
     private final UserAccountService userAccountService;
     private final HttpSession httpSession;
+    private final CookieUtil cookieUtil;
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest request
     , HttpServletResponse response){
 
-        UserInfoWithToken userInfo = userAccountService.login(request, response);
+        UserAccount user = userAccountService.login(request);
+        UserInfoWithTokens userInfoWithTokens = userAccountService.generateTokens(user);
+
+        UserInfoWithToken userInfo = UserInfoWithToken.from(userInfoWithTokens);
+
+        cookieUtil.addCookie(response,"refreshToken", userInfoWithTokens.getRefreshToken());
+
         log.info("{}님이 로그인하였습니다.",userInfo.getName());
 
         return ResponseEntity.ok()
@@ -54,7 +63,11 @@ public class UserAccountController {
     public ResponseEntity<?> socialLogin(HttpServletResponse response){
         UserAccount user = (UserAccount)httpSession.getAttribute("user");
 
-        UserInfoWithToken userInfo = userAccountService.login(user, response);
+        UserInfoWithTokens userInfoWithTokens = userAccountService.generateTokens(user);
+        UserInfoWithToken userInfo = UserInfoWithToken.from(userInfoWithTokens);
+
+        cookieUtil.addCookie(response,"refreshToken", userInfoWithTokens.getRefreshToken());
+
         log.info("{}님이 소셜로그인 하였습니다.",userInfo.getName());
 
         return ResponseEntity.ok()
