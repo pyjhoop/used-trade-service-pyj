@@ -1,8 +1,10 @@
 package com.example.trade.security.jwt;
 
+import com.example.trade.util.ErrorCode;
 import com.example.trade.domain.UserAccount;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -94,24 +96,31 @@ public class TokenProvider{
     }
 
     // 토큰의 유효성 검증을 수행
-    public boolean validateToken(String token) {
+    public boolean validateToken(String token, HttpServletRequest request) {
         try {
             Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
             return true;
         } catch (io.jsonwebtoken.security.SecurityException | MalformedJwtException e) {
 
-            log.info("잘못된 JWT 서명입니다.");
+            log.info(ErrorCode.MALFORMED_TOKEN.getMessage());
+            request.setAttribute("exception",ErrorCode.MALFORMED_TOKEN.getMessage());
+            throw new JwtException(ErrorCode.MALFORMED_TOKEN.getMessage());
         } catch (ExpiredJwtException e) {
 
-            log.info("만료된 JWT 토큰입니다.");
+            log.info(ErrorCode.EXPIRED_TOKEN.getMessage());
+            request.setAttribute("exception",ErrorCode.EXPIRED_TOKEN.getMessage());
+            throw new JwtException(ErrorCode.EXPIRED_TOKEN.getMessage());
         } catch (UnsupportedJwtException e) {
 
-            log.info("지원되지 않는 JWT 토큰입니다.");
+            log.info(ErrorCode.UNSUPPORTED_TOKEN.getMessage());
+            request.setAttribute("exception",ErrorCode.UNSUPPORTED_TOKEN.getMessage());
+            throw new JwtException(ErrorCode.UNSUPPORTED_TOKEN.getMessage());
         } catch (IllegalArgumentException e) {
 
-            log.info("JWT 토큰이 잘못되었습니다.");
+            log.info(ErrorCode.WRONG_TYPE_TOKEN.getMessage());
+            request.setAttribute("exception",ErrorCode.WRONG_TYPE_TOKEN.getMessage());
+            throw new JwtException(ErrorCode.WRONG_TYPE_TOKEN.getMessage());
         }
-        return false;
     }
 
 }
