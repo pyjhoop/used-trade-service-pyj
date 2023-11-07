@@ -41,7 +41,7 @@ public class SecurityConfig {
                                 .sessionManagement(session -> session
                                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                                 .authorizeHttpRequests(auth -> auth
-                                        .requestMatchers("/api/auth/**","oauth2/**","/").permitAll()
+                                        .requestMatchers("/api/auth/**","oauth2/**","/","/ws/**","/chat","/chatlist","/favicon.ico").permitAll()
                                         .anyRequest().authenticated())
                                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                                 .exceptionHandling(excep -> excep
