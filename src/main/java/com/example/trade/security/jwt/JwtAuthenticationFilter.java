@@ -45,9 +45,17 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private String parseToken(HttpServletRequest request){
         String bearerToken = request.getHeader("Authorization");
 
-        if(bearerToken.startsWith("Bearer")){
-            return bearerToken.substring(7);
+        try{
+            if(bearerToken.startsWith("Bearer")){
+                return bearerToken.substring(7);
+            }
+
+        }catch (NullPointerException e){
+            log.info("AccessToken이 존재하지 않습니다.");
+            request.setAttribute("exception","AccessToken이 존재하지 않습니다.");
+            throw new RuntimeException("AccessToken이 존재하지 않습니다.");
         }
+
         return null;
     }
 

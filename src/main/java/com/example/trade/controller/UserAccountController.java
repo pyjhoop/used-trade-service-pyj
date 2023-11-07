@@ -43,7 +43,8 @@ public class UserAccountController {
                 .body(Api.builder()
                         .status("OK")
                         .message("로그인에 성공했습니다.")
-                        .data(userInfo));
+                        .data(userInfo)
+                        .build());
     }
 
     @PostMapping("/signup")
@@ -52,11 +53,11 @@ public class UserAccountController {
         UserAccount user = userAccountService.singUp(request);
         log.info("{}님이 회원가입하였습니다.",user.getName());
 
+
         return ResponseEntity.status(201)
-                .body(Api.builder()
-                        .status("Created")
+                .body(Api.builder().status("Created")
                         .message("회원가입이 성공했습니다.")
-                        .data(null));
+                        .data(null).build());
     }
 
     @GetMapping("/social")
@@ -74,7 +75,8 @@ public class UserAccountController {
                 .body(Api.builder()
                         .status("OK")
                         .message("소셜로그인에 성공했습니다.")
-                        .data(userInfo));
+                        .data(userInfo)
+                        .build());
     }
 
     @GetMapping("/test")
