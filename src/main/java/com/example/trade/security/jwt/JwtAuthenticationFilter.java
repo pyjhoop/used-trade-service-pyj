@@ -69,6 +69,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 || request.getRequestURI().equals("/favicon.ico")
                 || request.getRequestURI().matches("/oauth2")
                 || request.getRequestURI().equals("/")
+                || request.getRequestURI().equals("/test1")
+                || request.getRequestURI().contains("/docs")
+                || request.getRequestURI().contains("/v3")
                 || request.getRequestURI().equals("/chat")
                 || request.getRequestURI().equals("/chatlist")
                 || request.getRequestURI().contains("/ws");
