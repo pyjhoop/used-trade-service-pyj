@@ -1,0 +1,234 @@
+{
+  "openapi" : "3.0.1",
+  "info" : {
+    "title" : "THT API 문서",
+    "description" : "Spring REST Docs with SwaggerUI.",
+    "version" : "0.0.1"
+  },
+  "servers" : [ {
+    "url" : "http://localhost:8080"
+  } ],
+  "tags" : [ ],
+  "paths" : {
+    "/api/auth/login" : {
+      "post" : {
+        "tags" : [ "UserAccount" ],
+        "summary" : "유저 로그인",
+        "description" : "유저 로그인",
+        "operationId" : "login-docs",
+        "requestBody" : {
+          "content" : {
+            "application/json;charset=UTF-8" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/LoginRequest"
+              },
+              "examples" : {
+                "login-docs" : {
+                  "value" : "{\r\n  \"email\" : \"user01@email.com\",\r\n  \"password\" : \"password\"\r\n}"
+                }
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "200",
+            "content" : {
+              "application/json;charset=UTF-8" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Login Response"
+                },
+                "examples" : {
+                  "login-docs" : {
+                    "value" : "{\r\n  \"status\" : \"OK\",\r\n  \"message\" : \"로그인에 성공했습니다.\",\r\n  \"data\" : {\r\n    \"email\" : \"email\",\r\n    \"name\" : \"name\",\r\n    \"nickname\" : \"nickname\",\r\n    \"profile\" : \"profile\",\r\n    \"accessToken\" : \"accessToken\"\r\n  }\r\n}"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/auth/signup" : {
+      "post" : {
+        "tags" : [ "UserAccount" ],
+        "summary" : "유저 회원가입",
+        "description" : "유저 회원가입",
+        "operationId" : "signUp-docs",
+        "requestBody" : {
+          "content" : {
+            "application/json;charset=UTF-8" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/SignUpRequest"
+              },
+              "examples" : {
+                "signUp-docs" : {
+                  "value" : "{\r\n  \"email\" : \"email\",\r\n  \"password\" : \"password\",\r\n  \"name\" : \"name\",\r\n  \"nickname\" : \"nickname\",\r\n  \"profile\" : \"profile\"\r\n}"
+                }
+              }
+            }
+          }
+        },
+        "responses" : {
+          "201" : {
+            "description" : "201",
+            "content" : {
+              "application/json;charset=UTF-8" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/SignUp Response"
+                },
+                "examples" : {
+                  "signUp-docs" : {
+                    "value" : "{\r\n  \"status\" : \"Created\",\r\n  \"message\" : \"회원가입이 성공했습니다.\",\r\n  \"data\" : null\r\n}"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/test1" : {
+      "get" : {
+        "tags" : [ "테스트" ],
+        "summary" : "테스트1",
+        "description" : "테스트1",
+        "operationId" : "test-docs",
+        "responses" : {
+          "200" : {
+            "description" : "200",
+            "content" : {
+              "application/json;charset=UTF-8" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/API"
+                },
+                "examples" : {
+                  "test-docs" : {
+                    "value" : "{\r\n  \"status\" : \"OK\",\r\n  \"message\" : \"good1\",\r\n  \"data\" : {\r\n    \"email\" : null,\r\n    \"name\" : null,\r\n    \"nickname\" : null,\r\n    \"profile\" : null,\r\n    \"accessToken\" : null\r\n  }\r\n}"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "SignUpRequest" : {
+        "title" : "SignUpRequest",
+        "type" : "object",
+        "properties" : {
+          "password" : {
+            "type" : "string",
+            "description" : "비밀번호"
+          },
+          "profile" : {
+            "type" : "string",
+            "description" : "프로필 주소"
+          },
+          "nickname" : {
+            "type" : "string",
+            "description" : "닉네임"
+          },
+          "name" : {
+            "type" : "string",
+            "description" : "이름"
+          },
+          "email" : {
+            "type" : "string",
+            "description" : "이메일 주소"
+          }
+        }
+      },
+      "SignUp Response" : {
+        "title" : "SignUp Response",
+        "type" : "object",
+        "properties" : {
+          "message" : {
+            "type" : "string",
+            "description" : "메세지"
+          },
+          "status" : {
+            "type" : "string",
+            "description" : "요청 상태"
+          }
+        }
+      },
+      "API" : {
+        "title" : "API",
+        "type" : "object",
+        "properties" : {
+          "data" : {
+            "type" : "object",
+            "properties" : { },
+            "description" : "userInfoWithToken"
+          },
+          "message" : {
+            "type" : "string",
+            "description" : "message"
+          },
+          "status" : {
+            "type" : "string",
+            "description" : "OK"
+          }
+        }
+      },
+      "Login Response" : {
+        "title" : "Login Response",
+        "type" : "object",
+        "properties" : {
+          "data" : {
+            "type" : "object",
+            "properties" : {
+              "profile" : {
+                "type" : "string",
+                "description" : "프로필 경로"
+              },
+              "nickname" : {
+                "type" : "string",
+                "description" : "닉네임"
+              },
+              "name" : {
+                "type" : "string",
+                "description" : "이름"
+              },
+              "accessToken" : {
+                "type" : "string",
+                "description" : "접근 토큰"
+              },
+              "email" : {
+                "type" : "string",
+                "description" : "이메일"
+              }
+            },
+            "description" : "유저정보"
+          },
+          "message" : {
+            "type" : "string",
+            "description" : "메세지"
+          },
+          "status" : {
+            "type" : "string",
+            "description" : "요청 상태"
+          }
+        }
+      },
+      "LoginRequest" : {
+        "title" : "LoginRequest",
+        "type" : "object",
+        "properties" : {
+          "password" : {
+            "type" : "string",
+            "description" : "비밀번호"
+          },
+          "email" : {
+            "type" : "string",
+            "description" : "이메일 주소"
+          }
+        }
+      }
+    }
+  }
+}
